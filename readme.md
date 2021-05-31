@@ -53,3 +53,9 @@
 ```
 10.32.1.21:/ess_data/first_interview_videos /ess_data/mycandidate/first_interview_videos nfs rw,sync
 ```
+
+### Настройка SSH-ключа для подтягивания изменений deployment'a ###
+
+[[ исходная инструкция ]](https://rtfm.co.ua/github-avtorizaciya-po-ssh-klyucham/)
+
+см. инструкцию ↑
