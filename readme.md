@@ -37,8 +37,10 @@
 
 1. На файловом сервере в файле `/etc/exports` настраиваются папки, которые будут примонтированы на другом сервере. Если требуемая папка вложена в другую, нужно описать их обе, иначе все примонтируется, но будет ошибка `I/O Error`.
 
-`/ess_data 10.32.1.23(rw,fsid=1,sync,no_subtree_check,no_root_squash)
-/ess_data/first_interview_videos 10.32.1.23(rw,fsid=2,no_subtree_check,sync,no_root_squash)`
+```
+/ess_data 10.32.1.23(rw,fsid=1,sync,no_subtree_check,no_root_squash) 
+/ess_data/first_interview_videos 10.32.1.23(rw,fsid=2,no_subtree_check,sync,no_root_squash)
+```
 
 2. Далее нужно применить сделанные изменения командой `exportfs -ra`.
 
