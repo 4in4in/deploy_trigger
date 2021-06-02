@@ -18,7 +18,9 @@ def normalize_output(subprocess_result): # разбить вывод на спи
 def deploy_trigger(project_name):
     if project_name in project_names:
         commands = [
-            # f'cd /ess_data/{project_name}/deployment && git pull',
+            f'eval "$(ssh-agent -s)"',
+            f'ssh-add /nfshome/alex_thunder/.ssh/4in4in_ssh_git',
+            f'cd /ess_data/{project_name}/deployment && git pull',
             f'cd /ess_data/{project_name}/deployment && sudo docker-compose down',
             f'cd /ess_data/{project_name}/deployment && sudo docker-compose pull', 
             f'true && yes | sudo docker image prune',
