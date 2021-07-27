@@ -1,9 +1,7 @@
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify
+import subprocess, re
 
 app = Flask(__name__)
-
-import subprocess, re
 
 project_names = ['mycandidate', 'exclusive']
 
@@ -28,7 +26,7 @@ def deploy_trigger(project_name):
         f'true && yes | sudo docker image prune',
         f'cd /ess_data/{project_name}/deployment && sudo docker-compose up -d'
         ]
-    results = [normalize_output(subprocess.getoutput(command)) for command in commands]
+    results = [ normalize_output(subprocess.getoutput(command)) for command in commands ]
     return results
 
 @app.route('/deploy/<project_name>')
