@@ -20,7 +20,7 @@ def deploy_trigger(project_name):
     commands = [
         f'eval "$(ssh-agent -s)"',
         f'ssh-add /nfshome/alex_thunder/.ssh/4in4in_ssh_git',
-        f'cd /ess_data/{project_name}/deployment && git pull',
+        f'cd /ess_data/{project_name}/deployment && git pull origin master',
         f'cd /ess_data/{project_name}/deployment && sudo docker-compose down',
         f'cd /ess_data/{project_name}/deployment && sudo docker-compose pull', 
         f'true && yes | sudo docker image prune',
