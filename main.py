@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import subprocess, re
 
 app = Flask(__name__)
@@ -31,8 +31,14 @@ def deploy_trigger(project_name):
 
 @app.route('/deploy/<project_name>')
 def deploy(project_name):
+    mode = request.args.get('mode')
     results = deploy_trigger(project_name)
-    return {'output': [results]}
+    if mode == 'str':
+        return '\n'+'\n'.join(['\n'.join(x) for x in results])+'\n'
+    if mode == 'list':
+        return jsonify(*results)
+    else:
+        return '<br>'.join(['<br>'.join(x) for x in results])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9999)
