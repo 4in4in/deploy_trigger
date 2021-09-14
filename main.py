@@ -3,7 +3,7 @@ import subprocess, re
 
 app = Flask(__name__)
 
-project_names = ['mycandidate', 'exclusive']
+project_names = ['mycandidate', 'exclusive', 'questionnaires']
 
 def escape_ansi(line): # удалить из вывода ANSI-коды (например, которые меняют цвет текста в терминале)
     ansi_escape =re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
@@ -17,14 +17,17 @@ def deploy_trigger(project_name):
     if project_name not in project_names:
         return f'No project {project_name}'
 
+    depl_prefix = 'q_' if project_name == 'questionnaires' else ''
+    cd_command = f'cd /ess_data/{project_name}/{depl_prefix}deployment'
+
     commands = [
         f'eval "$(ssh-agent -s)"',
         f'ssh-add /nfshome/alex_thunder/.ssh/4in4in_ssh_git',
-        f'cd /ess_data/{project_name}/deployment && git pull origin master',
-        f'cd /ess_data/{project_name}/deployment && sudo docker-compose down',
-        f'cd /ess_data/{project_name}/deployment && sudo docker-compose pull', 
+        f'{cd_command} && git pull origin master',
+        f'{cd_command} && sudo docker-compose down',
+        f'{cd_command} && sudo docker-compose pull', 
         f'true && yes | sudo docker image prune',
-        f'cd /ess_data/{project_name}/deployment && sudo docker-compose up -d'
+        f'{cd_command} && sudo docker-compose up -d'
         ]
     results = [ normalize_output(subprocess.getoutput(command)) for command in commands ]
     return results
