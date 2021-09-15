@@ -1,7 +1,9 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
+import requests
 import subprocess, re
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 project_names = ['mycandidate', 'exclusive', 'questionnaires']
 
@@ -42,6 +44,20 @@ def deploy(project_name):
         return jsonify(*results)
     else:
         return '<br>'.join(['<br>'.join(x) for x in results])
+
+@app.route('/api/_deploy', methods=['POST'])
+def _deploy_ex():
+    code = request.form.get('code')
+    project = request.form.get('project')
+    key = os.environ.get('deploy_key')
+    if key and code == key:
+        results = deploy_trigger(project)
+        return '<br>'.join(['<br>'.join(x) for x in results])
+    return 'Neverniy kod'
+
+@app.route('/api/deploy')
+def return_deploy_page():
+    return send_from_directory('', 'deploy.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9999)
