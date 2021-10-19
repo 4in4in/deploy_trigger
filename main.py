@@ -26,7 +26,7 @@ def deploy_trigger(project_name):
         f'eval "$(ssh-agent -s)"',
         f'ssh-add /nfshome/alex_thunder/.ssh/4in4in_ssh_git',
         f'{cd_command} && git pull origin master',
-        f'{cd_command} && sudo docker-compose down',
+        # f'{cd_command} && sudo docker-compose down',
         f'{cd_command} && sudo docker-compose pull', 
         f'true && yes | sudo docker image prune',
         f'{cd_command} && sudo docker-compose up -d'
